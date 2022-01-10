@@ -1,17 +1,11 @@
 var express = require("express");
 var router = express.Router();
 
-/* GET home page. */
-router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
-});
+const Get_controller = require("../controllers/stock_price/get_controller");
+const get_controller = new Get_controller();
 
-const Find_controller = require("../controllers/find_controller");
-const find_controller = new Find_controller();
+router.get("/:stock", get_controller.get_stock_price);
+router.get("/all/:stock", get_controller.get_stock_all_price);
 
-router.get("/stockDailyPrice/:stock", find_controller.get_stockDailyPrice);
-
-/**
-
- */
+router.get("/stockName/:stock", dialogService_controller.get_stockName);
 module.exports = router;

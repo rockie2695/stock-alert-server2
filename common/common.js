@@ -31,5 +31,6 @@ module.exports = {
     "http://localhost:3000",
     "https://rockie-stockalertclient.herokuapp.com",
     "https://trusting-austin-bb7eb7.netlify.app",
+    'https://stock-alert-server2.herokuapp.com'
   ],
 };
