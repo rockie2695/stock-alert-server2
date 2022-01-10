@@ -1,22 +1,22 @@
-import { checkEmail, getDayTime, headers as _headers } from "../common/common";
-import fetch from "node-fetch";
-import { encode } from "node-base64-image";
+const Common = require("../common/common");
+const fetch = require("node-fetch");
+const base64 = require("node-base64-image");
 
-export default class DialogService {
+module.exports = class DialogService_controller {
     get_stockNews(req, res, next) {
-        if (!checkEmail(req.headers["email"])) {
+        if (!Common.checkEmail(req.headers["email"])) {
             res.status(500).json({
                 error: "please enter email！",
             });
             return;
         }
-        let { todayHour, todayMinute, todaySecond } = getDayTime();
+        let { todayHour, todayMinute, todaySecond } = Common.getDayTime();
         let STOCK = req.params.stock;
         let promises = [];
         let promises2 = []; //for photo
         let settings = {
             method: "get",
-            headers: _headers,
+            headers: Common.headers,
         };
         let url = `https://money18.on.cc/cnt/utf8/stockList/HK/${STOCK}/${STOCK}_all.js?time=${todayHour}${todayMinute}${todaySecond}`;
         promises.push(
@@ -53,10 +53,10 @@ export default class DialogService {
 
                                 let options = {
                                     string: true,
-                                    headers: _headers,
+                                    headers: Common.headers,
                                 };
 
-                                let image = encode(rebuild_imgUrl, options);
+                                let image = base64.encode(rebuild_imgUrl, options);
                                 return resolve(image);
                             }
                         })
@@ -104,18 +104,18 @@ export default class DialogService {
             });
     }
     get_stockDailyPrice(req, res, next) {
-        if (!checkEmail(req.headers["email"])) {
+        if (!Common.checkEmail(req.headers["email"])) {
             res.status(500).json({
                 error: "please enter email！",
             });
             return;
         }
-        let { todayHour, todayMinute, todaySecond } = getDayTime();
+        let { todayHour, todayMinute, todaySecond } = Common.getDayTime();
         let STOCK = req.params.stock;
         let promises = [];
         let settings = {
             method: "get",
-            headers: _headers,
+            headers: Common.headers,
         };
         let url = `https://www.quandl.com/api/v3/datasets/HKEX/${STOCK}.json?api_key=xCJuSM5DeG9s9PtmNbFg&time=${todayHour}${todayMinute}${todaySecond}`;
         promises.push(

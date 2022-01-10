@@ -1,12 +1,7 @@
 var express = require("express");
 var router = express.Router();
 
-/* GET home page. */
-router.get("/", function (req, res, next) {
-    res.render("index", { title: "Express" });
-});
-
-const DialogService_controller = require("../controllers/dialogService_controller").default;
+const DialogService_controller = require("../controllers/dialogService_controller");
 const dialogService_controller = new DialogService_controller();
 
 router.get("/stockNews/:stock", dialogService_controller.get_stockNews);

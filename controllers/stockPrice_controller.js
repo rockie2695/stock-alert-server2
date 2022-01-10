@@ -1,7 +1,7 @@
 const find_stock_price_model = require("../../model/stock_price/find_stock_price_model");
 const Common = require("../../common/common");
 
-module.exports = class stockPrice_controller {
+module.exports = class StockPrice_controller {
     get_stock_price(req, res, next) {
         if (!Common.checkEmail(req.headers["email"])) {
             res.status(500).json({

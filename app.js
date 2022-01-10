@@ -15,6 +15,7 @@ const Common = require("./common/common");
 var dialogServiceRouter = require("./routes/dialogServiceRouter");
 var stockNotifyRouter = require("./routes/stockNotifyRouter");
 var stockPriceRouter = require("./routes/stockPriceRouter");
+var stockNameRouter = require("./routes/stockNameRouter");
 
 var app = express();
 app.use(logger("dev"));
@@ -34,6 +35,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/dialogService", dialogServiceRouter);
 app.use("/stockNotify", stockNotifyRouter);
 app.use("/stockPrice", stockPriceRouter);
+app.use("/stockName", stockNameRouter);
 
 app.get("/", function (req, res) {
   /*if (interval === null) {

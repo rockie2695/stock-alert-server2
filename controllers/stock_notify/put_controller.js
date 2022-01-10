@@ -28,9 +28,10 @@ module.exports = class put_controller {
 
     if (updateMessage.length !== 0) {
       for (let i = 0; i < updateMessage.length; i++) {
+        console.log(i)
         if (
           updateMessage[i].stock !== "" &&
-          parseInt(updateMessage[i].stock) !== 0 &&
+          parseInt(updateMessage[i].stock) || 0 !== 0 &&
           updateMessage[i].price !== ""
         ) {
           let row = {
@@ -41,10 +42,10 @@ module.exports = class put_controller {
               },
               update: {
                 $set: {
-                  stock: updateMessage[i].stock,
-                  price: parseFloat(updateMessage[i].price),
+                  stock: encodeURIComponent(updateMessage[i].stock),
+                  price: parseFloat(updateMessage[i].price) || 0,
                   equal: updateMessage[i].equal,
-                  alert: updateMessage[i].alert,
+                  alert: updateMessage[i].alert == true,
                 },
               },
             },
@@ -57,15 +58,15 @@ module.exports = class put_controller {
       for (let i = 0; i < insertMessage.length; i++) {
         if (
           insertMessage[i].stock !== "" &&
-          parseInt(insertMessage[i].stock) !== 0 &&
+          parseInt(insertMessage[i].stock) || 0 !== 0 &&
           insertMessage[i].price !== ""
         ) {
           let row = {
             insertOne: {
-              stock: insertMessage[i].stock,
-              price: parseFloat(insertMessage[i].price),
+              stock: encodeURIComponent(insertMessage[i].stock),
+              price: parseFloat(insertMessage[i].price) || 0,
               equal: insertMessage[i].equal,
-              alert: insertMessage[i].alert,
+              alert: insertMessage[i].alert == true,
               email: req.headers["email"],
             },
           };
@@ -74,6 +75,7 @@ module.exports = class put_controller {
       }
     }
 
+    console.log(query)
     let update_notify = bulkWrite_stock_notify_model(query);
 
     if (query.length === 0) {
