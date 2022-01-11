@@ -48,6 +48,7 @@ app.use(function (req, res, next) {
       method: "get",
       headers: Common.headers,
     };
+    console.log(req.headers)
     let url = `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${req.headers["Authorization"]}`
     console.log(url)
     fetch(url, settings)
