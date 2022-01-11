@@ -48,13 +48,10 @@ app.use(function (req, res, next) {
       method: "get",
       headers: Common.headers,
     };
-    console.log(req.headers)
-    let url = `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${req.headers["Authorization"]}`
-    console.log(url)
+    let url = `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${req.headers["authorization"]}`
     fetch(url, settings)
       .then((res) => res.json())
       .then((res) => {
-        console.log(res)
         // do something with JSON
         if (res.azp === "56496239522-mgnu8mmkmt1r8u9op32b0ik8n7b625pd.apps.googleusercontent.com" ||
           res.azp === "637550083168-0aqnadjb5ealolonvioba828rki4dhlo.apps.googleusercontent.com") {
