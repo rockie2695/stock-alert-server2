@@ -7,6 +7,7 @@ var helmet = require("helmet");
 var cors = require("cors");
 var db = require("./model/db_connect");
 const Common = require("./common/common");
+const fetch = require("node-fetch");
 
 var dialogServiceRouter = require("./routes/dialogServiceRouter");
 var stockNotifyRouter = require("./routes/stockNotifyRouter");
