@@ -4,12 +4,6 @@ const base64 = require("node-base64-image");
 
 module.exports = class DialogService_controller {
     get_stockNews(req, res, next) {
-        if (!Common.checkEmail(req.headers["email"])) {
-            res.status(500).json({
-                error: "please enter email！",
-            });
-            return;
-        }
         let { todayHour, todayMinute, todaySecond } = Common.getDayTime();
         let STOCK = req.params.stock;
         let promises = [];
@@ -104,12 +98,6 @@ module.exports = class DialogService_controller {
             });
     }
     get_stockDailyPrice(req, res, next) {
-        if (!Common.checkEmail(req.headers["email"])) {
-            res.status(500).json({
-                error: "please enter email！",
-            });
-            return;
-        }
         let { todayHour, todayMinute, todaySecond } = Common.getDayTime();
         let STOCK = req.params.stock;
         let promises = [];

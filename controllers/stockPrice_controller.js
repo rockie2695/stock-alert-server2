@@ -1,14 +1,8 @@
-const find_stock_price_model = require("../../model/stock_price/find_stock_price_model");
-const Common = require("../../common/common");
+const find_stock_price_model = require("../model/stock_price/find_stock_price_model");
+const Common = require("../common/common");
 
 module.exports = class StockPrice_controller {
     get_stock_price(req, res, next) {
-        if (!Common.checkEmail(req.headers["email"])) {
-            res.status(500).json({
-                error: "please enter email！",
-            });
-            return;
-        }
         let STOCK = req.params.stock;
         let { todayHour, todayDay, today } = Common.getDayTime();
         let onlyToday = new Date(today.toDateString());
@@ -42,12 +36,6 @@ module.exports = class StockPrice_controller {
             });
     }
     get_stock_all_price(req, res, next) {
-        if (!Common.checkEmail(req.headers["email"])) {
-            res.status(500).json({
-                error: "please enter email！",
-            });
-            return;
-        }
         let STOCK = req.params.stock;
         find_stock_price_model({ stock: STOCK }, { projection: { _id: 0 } })
             .then(function (result) {

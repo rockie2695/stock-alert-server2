@@ -6,12 +6,6 @@ const { ObjectId } = require("mongodb");
 
 module.exports = class put_controller {
   put_all_stock_notify(req, res, next) {
-    if (!Common.checkEmail(req.headers["email"])) {
-      res.status(500).json({
-        error: "please enter email！",
-      });
-      return;
-    }
     if (
       typeof req.body.update === "undefined" ||
       typeof req.body.insert === "undefined"
@@ -197,7 +191,7 @@ module.exports = class put_controller {
     }
     update_notify
       .then(function (result) {
-        res.status(200).json({ ok: result });
+        res.status(201).json({ ok: result });
       })
       .catch(function (error) {
         console.log(error);

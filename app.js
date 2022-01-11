@@ -8,14 +8,13 @@ var cors = require("cors");
 var db = require("./model/db_connect");
 const Common = require("./common/common");
 
-//var findRouter = require("./routes/find");
-//var selectRouter = require("./routes/select");
-//var deleteRouter = require("./routes/delete");
-//var updateRouter = require("./routes/update");
 var dialogServiceRouter = require("./routes/dialogServiceRouter");
 var stockNotifyRouter = require("./routes/stockNotifyRouter");
 var stockPriceRouter = require("./routes/stockPriceRouter");
 var stockNameRouter = require("./routes/stockNameRouter");
+
+var dotenv = require("dotenv");
+dotenv.config();
 
 var app = express();
 app.use(logger("dev"));
@@ -27,16 +26,6 @@ app.use(express.urlencoded({ extended: false })); // 解析 application/x-www-fo
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-//app.use("/find", findRouter);
-//app.use("/select", selectRouter);
-//app.use("/update", updateRouter);
-//app.use("/delete", deleteRouter);
-
-app.use("/dialogService", dialogServiceRouter);
-app.use("/stockNotify", stockNotifyRouter);
-app.use("/stockPrice", stockPriceRouter);
-app.use("/stockName", stockNameRouter);
-
 app.get("/", function (req, res) {
   /*if (interval === null) {
     time = {};
@@ -44,6 +33,23 @@ app.get("/", function (req, res) {
   }*/
   res.send("ok");
 });
+
+app.use(function (req, res, next) {
+  if (!Common.checkEmail(req.headers["email"])) {
+    res.status(401).json({
+      error: "please enter email！",
+    });
+    return;
+  }
+  next();
+});
+
+app.use("/dialogService", dialogServiceRouter);
+app.use("/stockNotify", stockNotifyRouter);
+app.use("/stockPrice", stockPriceRouter);
+app.use("/stockName", stockNameRouter);
+
+
 
 app.all(/.*/, function (req, res) {
   res

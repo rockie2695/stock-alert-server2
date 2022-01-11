@@ -3,12 +3,6 @@ const fetch = require("node-fetch");
 
 module.exports = class StockName_controller {
   get_stockName(req, res, next) {
-    if (!Common.checkEmail(req.headers["email"])) {
-      res.status(500).json({
-        error: "please enter email！",
-      });
-      return;
-    }
     let { todayHour, todayMinute, todaySecond } = Common.getDayTime();
     let STOCK = req.params.stock;
     let promises = [];

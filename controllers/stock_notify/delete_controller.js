@@ -5,12 +5,6 @@ const bulkWrite_each_stock_model = require("../../model/each_stock/bulkWrite_eac
 
 module.exports = class delete_controller {
   delete_stock_notify(req, res, next) {
-    if (!Common.checkEmail(req.headers["email"])) {
-      res.status(500).json({
-        error: "please enter email！",
-      });
-      return;
-    }
     if (typeof req.body.stock === "undefined") {
       res.status(500).json({
         error: "empty body !",
@@ -44,7 +38,7 @@ module.exports = class delete_controller {
         return bulkWrite_each_stock_model(promises);
       })
       .then(function (result) {
-        res.status(200).json({ _id: _id, ok: true });
+        res.status(204).json({ _id: _id, ok: true });
       })
       .catch((err) => {
         console.error(err);
