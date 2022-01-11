@@ -35,13 +35,45 @@ app.get("/", function (req, res) {
 });
 
 app.use(function (req, res, next) {
-  if (!Common.checkEmail(req.headers["email"])) {
+  /*if (!Common.checkEmail(req.headers["email"])) {
     res.status(401).json({
       error: "please enter email！",
     });
     return;
+  }*/
+
+  if (process.env.NODE_ENV === 'production') {
+    let settings = {
+      method: "get",
+      headers: Common.headers,
+    };
+    let url = `https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=${req.headers["Authorization"]}`
+    fetch(url, settings)
+      .then((res) => res.json())
+      .then((res) => {
+        // do something with JSON
+        if (res.azp === "56496239522-mgnu8mmkmt1r8u9op32b0ik8n7b625pd.apps.googleusercontent.com" ||
+          res.azp === "637550083168-0aqnadjb5ealolonvioba828rki4dhlo.apps.googleusercontent.com") {
+          next();
+        } else {
+          res.status(401).json({
+            error: "please login first！",
+          });
+          return;
+        }
+      })
+      .catch((err) => {
+        res.status(500).json({
+          error: "login checking error！",
+        });
+        return;
+      })
+    //56496239522-mgnu8mmkmt1r8u9op32b0ik8n7b625pd.apps.googleusercontent.com //rockie-stockalertclient.herokuapp.com
+    //637550083168-0aqnadjb5ealolonvioba828rki4dhlo.apps.googleusercontent.com//trusting-austin-bb7eb7.netlify.app
+  } else {
+    next();
   }
-  next();
+
 });
 
 app.use("/dialogService", dialogServiceRouter);
