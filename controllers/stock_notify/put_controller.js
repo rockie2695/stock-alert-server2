@@ -22,11 +22,10 @@ module.exports = class put_controller {
 
     if (updateMessage.length !== 0) {
       for (let i = 0; i < updateMessage.length; i++) {
-        console.log(i)
+        console.log(i);
         if (
-          updateMessage[i].stock !== "" &&
-          parseInt(updateMessage[i].stock) || 0 !== 0 &&
-          updateMessage[i].price !== ""
+          (updateMessage[i].stock !== "" && parseInt(updateMessage[i].stock)) ||
+          (0 !== 0 && updateMessage[i].price !== "")
         ) {
           let row = {
             updateOne: {
@@ -51,9 +50,8 @@ module.exports = class put_controller {
     if (insertMessage.length !== 0) {
       for (let i = 0; i < insertMessage.length; i++) {
         if (
-          insertMessage[i].stock !== "" &&
-          parseInt(insertMessage[i].stock) || 0 !== 0 &&
-          insertMessage[i].price !== ""
+          (insertMessage[i].stock !== "" && parseInt(insertMessage[i].stock)) ||
+          (0 !== 0 && insertMessage[i].price !== "")
         ) {
           let row = {
             insertOne: {
@@ -69,7 +67,7 @@ module.exports = class put_controller {
       }
     }
 
-    console.log(query)
+    console.log(query);
     let update_notify = bulkWrite_stock_notify_model(query);
 
     if (query.length === 0) {
@@ -152,7 +150,7 @@ module.exports = class put_controller {
         res.status(500).json({ error: error });
       });
   }
-  put_stock_notify_alert(req, res, next) {
+  async put_stock_notify_alert(req, res, next) {
     if (!Common.checkEmail(req.headers["email"])) {
       res.status(500).json({
         error: "please enter email！",
@@ -183,19 +181,24 @@ module.exports = class put_controller {
       },
     };
     query.push(row);
-    let update_notify = bulkWrite_stock_notify_model(query);
-
     if (query.length === 0) {
       res.status(500).json({ error: "empty query" });
       return;
     }
-    update_notify
+    try {
+      const result = await bulkWrite_stock_notify_model(query);
+      res.status(201).json({ ok: result });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: error.message });
+    }
+    /*update_notify
       .then(function (result) {
         res.status(201).json({ ok: result });
       })
       .catch(function (error) {
         console.log(error);
         res.status(500).json({ error: error });
-      });
+      });*/
   }
 };
