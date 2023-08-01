@@ -254,7 +254,7 @@ function startServer() {
                   }
                 }
               }
-              console.log(stockPriceInsert.length);
+              //console.log(stockPriceInsert.length);
               if (stockPriceInsert.length !== 0) {
                 var insert_stock = function (query) {
                   let collection = db.collection("stockAlert_" + "stockPrice");
