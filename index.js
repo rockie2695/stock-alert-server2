@@ -544,4 +544,42 @@ app.all(/.*/, function (req, res) {
     .send({ method: req.method, result: req.url + " Not Supported" });
 });
 
+function findRecord(collection = "", query = {}, filter = {}, callback) {
+  let middleQuery = collection.find(query, filter);
+  if (query.hasOwnProperty("count")) {
+    delete query.count;
+    callback(middleQuery.count());
+  } else {
+    if (query.hasOwnProperty("orderBy")) {
+      let orderBy = query.orderBy;
+      delete query.orderBy;
+      middleQuery = middleQuery.sort(orderBy);
+    }
+    if (query.hasOwnProperty("limit")) {
+      let limit = query.limit;
+      delete query.limit;
+      middleQuery = middleQuery.limit(limit);
+    }
+
+    middleQuery.toArray(function (err, result) {
+      callback(err, result);
+    });
+  }
+}
+function insertManyRecord(collection = "", query = {}, callback) {
+  collection.insertMany(query, function (err, result) {
+    callback(err, result);
+  });
+}
+function updateRecordMulti(collection = "", query = {}, callback) {
+  collection.bulkWrite(query, function (err, result) {
+    callback(err, result);
+  });
+}
+function deleteRecord(collection = "", query = {}, callback) {
+  collection.deleteOne(query, function (err, result) {
+    callback(err, result);
+  });
+}
+
 module.exports = app;
