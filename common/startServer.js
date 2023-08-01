@@ -1,6 +1,6 @@
-let io = undefined;
+// let socketio = {};
 const createIo = (server) => {
-  io = require("socket.io")(server, {
+  global.io = require("socket.io")(server, {
     cors: {
       origins: [
         "http://localhost:3000",
@@ -15,7 +15,7 @@ const createIo = (server) => {
         */
 
   //監聽 Server 連線後的所有事件，並捕捉事件 socket 執行
-  io.on("connection", (socket) => {
+  global.io.on("connection", (socket) => {
     //經過連線後在 console 中印出訊息
     console.log("success connect!");
     /*
@@ -23,12 +23,12 @@ const createIo = (server) => {
             socket.on('getMessage', message => {
                 socket.emit('getMessage', message)
             })
-        
+
             //回傳給所有連結著的 client
             socket.on('getMessageAll', message => {
                 io.sockets.emit('getMessageAll', message)
             })
-        
+
             //回傳給除了發送者外所有連結著的 client
             socket.on('getMessageLess', message => {
                 socket.broadcast.emit('getMessageLess', message)
@@ -71,5 +71,53 @@ const createIo = (server) => {
   });
 };
 
-module.exports = { io, createIo };
+// class SocketIO {
+//   io = undefined;
+//   constructor() {
+//     this.io = undefined;
+//   }
+//   get io() {
+//     console.log(this.io)
+//     return this.io;
+//   }
+//   createIo(server) {
+//     this.io = require("socket.io")(server, {
+//       cors: {
+//         origins: [
+//           "http://localhost:3000",
+//           "https://rockie-stockalertclient.herokuapp.com",
+//           "https://trusting-austin-bb7eb7.netlify.app",
+//         ],
+//       },
+//     });
+//     console.log(this.io)
+//     this.io.on("connection", (socket) => {
+//       console.log("success connect!");
+//       socket.on("addRoom", (room) => {
+//         if (!io.sockets.adapter.rooms.has(room)) {
+//           //since socket.io change io.sockets.adapter.rooms from object to map
+//           socket.join(room);
+//         }
+//       });
 
+//       socket.on("leaveRoom", (room) => {
+//         if (io.sockets.adapter.rooms.has(room)) {
+//           socket.leave(room);
+//         }
+//       });
+
+//       //送出中斷申請時先觸發此事件
+//       socket.on("disConnection", (message) => {
+//         //再送訊息讓 Client 做 .close()
+//         socket.emit("disConnection", "");
+//       });
+
+//       //client中斷後觸發此監聽
+//       socket.on("disconnect", () => {
+//         console.log("disconnection");
+//       });
+//     });
+//   }
+// }
+
+module.exports = createIo

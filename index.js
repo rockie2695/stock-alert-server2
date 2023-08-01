@@ -8,7 +8,6 @@ var cors = require("cors");
 var db = require("./model/db_connect");
 const Common = require("./common/common");
 const fetch = require("node-fetch");
-const io = require("./common/startServer");
 var dialogServiceRouter = require("./routes/dialogServiceRouter");
 var stockNotifyRouter = require("./routes/stockNotifyRouter");
 var stockPriceRouter = require("./routes/stockPriceRouter");
@@ -235,7 +234,8 @@ function startServer() {
                         time[result[i].stock] !== result[i].real.ltt)
                     ) {
                       console.log("here 2");
-                      io.sockets.in(result[i].stock).emit("stockPrice", {
+                      console.log(global.io);
+                      global.io.sockets.in(result[i].stock).emit("stockPrice", {
                         stock: result[i].stock,
                         price: parseFloat(result[i].real.np),
                         time: result[i].real.ltt,
@@ -337,7 +337,7 @@ function startServer() {
               };
               if (
                 typeof result !== "undefined" &&
-                (test || (test === false && port !== 3001))
+                (test || (test === false && app?.settings?.port !== 3001))
               ) {
                 let stockNotifyArray = result[0];
                 let alertSubscription = result[1];
@@ -413,7 +413,7 @@ function startServer() {
                                 if (error) {
                                   console.log(error);
                                 } else {
-                                  io.sockets
+                                  global.io.sockets
                                     .in(stockNotifyArray[j].email)
                                     .emit("changeAlert", {
                                       stock: stockNotifyArray[j].stock,
