@@ -179,7 +179,7 @@ function startServer() {
                 if (result[i].stock !== "") {
                   //let url = `https://money18.on.cc/js/real/hk/quote/${result[i].stock}_r.js?time=${todayHour}${todayMinute}${todaySecond}`;
                   let url = `https://realtime-money18-cdn.on.cc/securityQuote/genStockDetailHKJSON.php?stockcode=${result[i].stock}&time=${todayHour}${todayMinute}${todaySecond}`;
-                  console.log(url);
+                  //console.log(url);
                   let settings = {
                     method: "Get",
                     follow: 0,
@@ -227,14 +227,13 @@ function startServer() {
                       rowDate.getMonth() === today.getMonth() &&
                       rowDate.getFullYear() === today.getFullYear())
                   ) {
-                    console.log("here 1");
+                    //console.log("here 1");
                     if (
                       typeof time[result[i].stock] === "undefined" ||
                       (typeof time[result[i].stock] !== "undefined" &&
                         time[result[i].stock] !== result[i].real.ltt)
                     ) {
-                      console.log("here 2");
-                      console.log(global.io);
+                      //console.log("here 2");
                       global.io.sockets.in(result[i].stock).emit("stockPrice", {
                         stock: result[i].stock,
                         price: parseFloat(result[i].real.np),
