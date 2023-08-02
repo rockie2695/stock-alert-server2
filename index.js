@@ -12,7 +12,7 @@ var dialogServiceRouter = require("./routes/dialogServiceRouter");
 var stockNotifyRouter = require("./routes/stockNotifyRouter");
 var stockPriceRouter = require("./routes/stockPriceRouter");
 var stockNameRouter = require("./routes/stockNameRouter");
-
+var validator = require("email-validator");
 var dotenv = require("dotenv");
 dotenv.config();
 
