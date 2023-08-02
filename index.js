@@ -14,6 +14,7 @@ var stockPriceRouter = require("./routes/stockPriceRouter");
 var stockNameRouter = require("./routes/stockNameRouter");
 var validator = require("email-validator");
 var dotenv = require("dotenv");
+let nodemailer = require("nodemailer");
 dotenv.config();
 
 var app = express();
