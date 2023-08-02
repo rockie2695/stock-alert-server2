@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const test = false;
 let time = {};
+let interval = null;
 
 const intervalWaitForMongo = setInterval(async () => {
   try {
